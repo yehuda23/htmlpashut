@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.9.3/firebase-app.js"
+      integrity="sha512-7EMd8ie/80oTWPYC1b5sF2DJJasmH/AqyyTRAeNJjClOkeOp4yGwW2VHErSY5RPDX2THQ+bn4+8+Te1GHB9NHw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.9.3/firebase-auth.min.js"
+      integrity="sha512-4V8hT4A3bRpeiS/qgKzkHFoDaOSZ4mGPVAk7KQojBP8TLbcpzGoW0vFnhoPTVpShu14A2rpxNstSrg0VF6xVhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script> -->
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- <script>
+      function statusChangeCallback(response) {
+        // Called with the results from FB.getLoginStatus().
+        console.log('statusChangeCallback');
+        console.log(response); // The current login status of the person.
+        if (response.status === 'connected') {
+          // Logged into your webpage and Facebook.
+          testAPI();
+        } else {
+          // Not logged into your webpage or we are unable to tell.
+          document.getElementById('status').innerHTML =
+            'Please log ' + 'into this webpage.';
+        }
+      }
+
+      function checkLoginState() {
+        // Called when a person is finished with the Login Button.
+        FB.getLoginStatus(function (response) {
+          // See the onlogin handler
+          statusChangeCallback(response);
+        });
+      }
+
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: '445846627491902',
+          cookie: true, // Enable cookies to allow the server to access the session.
+          xfbml: true, // Parse social plugins on this webpage.
+          version: 'v14.0', // Use this Graph API version for this call.
+        });
+
+        FB.getLoginStatus(function (response) {
+          // Called after the JS SDK has been initialized.
+          statusChangeCallback(response); // Returns the login status.
+        });
+      };
+
+      function testAPI() {
+        // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
+        console.log('Welcome!  Fetching your information.... ');
+        FB.api('/me', function (response) {
+          console.log('Successful login for: ' + response.name);
+          document.getElementById('status').innerHTML =
+            'Thanks for logging in, ' + response.name + '!';
+        });
+      }
+    </script>
+
+
+    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+    </fb:login-button>
+
+    <div id="status"></div>
+
+    <script
+    async
+    defer
+    crossorigin="anonymous"
+    src="https://connect.facebook.net/en_US/sdk.js"
+    ></script> -->
+    <button id="loginButton">logging</button>
+
+    <script src="https://www.gstatic.com/firebasejs/8.0/firebase.js"></script>
+    <script>
+      var config = {
+        apiKey: 'AIzaSyDPXCRrn_ivY1RkgCLYf7EpAETCJTq-afY',
+        authDomain: 'mindful-linker-361112.firebaseapp.com',
+      };
+      firebase.initializeApp(config);
+
+      var provider = new firebase.auth.FacebookAuthProvider();
+      provider.addScope('email');
+
+      let btn = document.getElementById('loginButton');
+      btn.addEventListener('click', logClick);
+      function logClick() {
+        firebase
+          .auth()
+          .signInWithPopup(provider)
+          .then((result) => {
+            console.log('result', result);
+            /** @type {firebase.auth.OAuthCredential} */
+            var credential = result.credential;
+
+            // The signed-in user info.
+            var user = result.user;
+
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            var accessToken = credential.accessToken;
+
+            // ...
+          })
+          .catch((error) => {
+            console.log('error', error);
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+
+            // ...
+          });
+      }
+    </script>
+  </body>
+</html>
