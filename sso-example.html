@@ -20,11 +20,13 @@
   </head>
   <body>
     <script>
+      let token;
       function statusChangeCallback(response) {
         // Called with the results from FB.getLoginStatus().
         console.log('statusChangeCallback');
         console.log(response); // The current login status of the person.
         if (response.status === 'connected') {
+          token = response.authResponse.accessToken;
           // Logged into your webpage and Facebook.
           testAPI();
         } else {
@@ -56,6 +58,18 @@
         });
       };
 
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, 'script', 'facebook-jssdk');
+
       function testAPI() {
         // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
         console.log('Welcome!  Fetching your information.... ');
@@ -65,11 +79,19 @@
             'Thanks for logging in, ' + response.name + '!';
         });
       }
+
+      function logout() {
+        FB.logout(function (res) {
+          console.log('res', res);
+        });
+      }
     </script>
 
     <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
     </fb:login-button>
-
+    <div>
+      <button onclick="logout()">logout</button>
+    </div>
     <div id="status"></div>
 
     <script
@@ -80,7 +102,7 @@
     ></script>
     <button id="loginButton">logging</button>
 
-    <script src="https://www.gstatic.com/firebasejs/8.0/firebase.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.0/firebase.js"></script>
     <script>
       var config = {
         apiKey: 'AIzaSyDPXCRrn_ivY1RkgCLYf7EpAETCJTq-afY',
@@ -123,6 +145,6 @@
             // ...
           });
       }
-    </script>
+    </script> -->
   </body>
 </html>
