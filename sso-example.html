@@ -26,7 +26,6 @@
         console.log('statusChangeCallback');
         console.log(response); // The current login status of the person.
         if (response.status === 'connected') {
-          token = response.authResponse.accessToken;
           // Logged into your webpage and Facebook.
           testAPI();
         } else {

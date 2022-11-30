@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      menu,
+      ol,
+      ul {
+        list-style: none;
+      }
+      img {
+        max-width: 100%;
+      }
+      table {
+        border-collapse: collapse;
+      }
+      input,
+      textarea {
+        -webkit-user-select: auto;
+      }
+      textarea {
+        white-space: revert;
+      }
+      meter {
+        -webkit-appearance: revert;
+        appearance: revert;
+      }
+      ::placeholder {
+        color: unset;
+      }
+      :where([hidden]) {
+        display: none;
+      }
+      :where([contenteditable]:not([contenteditable='false'])) {
+        -moz-user-modify: read-write;
+        -webkit-user-modify: read-write;
+        overflow-wrap: break-word;
+        -webkit-line-break: after-white-space;
+        -webkit-user-select: auto;
+      }
+      :where([draggable='true']) {
+        -webkit-user-drag: element;
+      }
+      .recommendation-widget.recommendation-widget--align-left {
+        right: inherit;
+        left: 0;
+        border-right-width: 0.125rem;
+        border-right-style: solid;
+        border-left-width: inherit;
+        border-left-style: inherit;
+      }
+      .recommendation-widget__divider {
+        display: block;
+      }
+      .recommendation-widget__stars {
+        display: flex;
+        justify-content: space-around;
+      }
+      .recommendation-widget__appraisal {
+        display: none;
+      }
+      .recommendation-widget__ratings {
+        display: none;
+      }
+      .recommendation-widget.recommendation-widget--extra-small
+        .recommendation-widget__stars {
+        flex-direction: column;
+      }
+      .recommendation-widget .recommendation-widget__appraisal {
+        display: block;
+      }
+      .recommendation-widget .recommendation-widget__ratings {
+        display: block;
+      }
+      .recommendation-widget .recommendation-widget__seal-without-label {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        display: none;
+      }
+      .recommendation-widget .recommendation-widget__seal {
+        opacity: 1;
+        display: inherit;
+      }
+      .recommendation-widget--small .recommendation-widget__stars {
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .recommendation-widget--small
+        .recommendation-widget__seal-without-
+        label {
+        opacity: 1;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .recommendation-widget--small .recommendation-widget__seal {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        display: none;
+      }
+      .recommendation-widget a {
+        text-decoration: none;
+      }
+      .recommendation-widget a:hover {
+        text-decoration: none;
+      }
+      .recommendation-widget__seal {
+        width: 5.5rem;
+        margin-top: 0.1875rem;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .recommendation-widget__star {
+        width: 1.0625rem;
+        height: 1.0625rem;
+      }
+      .recommendation-widget__appraisal {
+        font-size: 0.6875rem;
+        text-align: center;
+        text-transform: uppercase;
+      }
+      .recommendation-widget__ratings {
+        font-size: 0.5625rem;
+        text-align: center;
+        text-transform: uppercase;
+      }
+      hr.recommendation-widget__divider {
+        border-top-style: solid;
+        border-top-width: 1px;
+        margin: 0.25rem 0.125rem;
+      }
+      .recommendation-widget {
+        border-top-color: #f07e12;
+        border-left-color: #f07e12;
+        border-bottom-color: #f07e12;
+        color: #f07e12;
+      }
+      .recommendation-widget.recommendation-widget--align-left {
+        border-right-color: #f07e12;
+        border-left-color: inherit;
+      }
+      .recommendation-widget a {
+        color: #f07e12;
+      }
+      .recommendation-widget a:hover {
+        color: #f07e12;
+      }
+      .recommendation-widget__divider--hide {
+        display: none;
+      }
+      .recommendation-widget hr.recommendation-widget__divider {
+        border-top-color: #f07e12;
+      }
+      .recommendation-widget--small {
+        width: 2.8125rem;
+        height: 10rem;
+        text-align: center;
+      }
+      .recommendation-widget--small .recommendation-widget__seal-without-label {
+        margin-top: 0.25rem;
+        width: 2rem;
+        height: 2rem;
+        display: inherit;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .recommendation-widget--small .recommendation-widget__stars {
+        height: 6.375rem;
+      }
+      .recommendation-widget--small .recommendation-widget__star {
+        width: 1rem;
+        height: 1rem;
+      }
+      .recommendation-widget--small .recommendation-widget__appraisal {
+        opacity: 0;
+      }
+      .recommendation-widget--small .recommendation-widget__ratings {
+        opacity: 0;
+      }
+      .recommendation-widget--small .recommendation-widget__divider--bottom {
+        opacity: 0;
+      }
+      .recommendation-widget--extra-small {
+        height: 3.75rem;
+      }
+      .recommendation-widget--extra-small .recommendation-widget__stars {
+        flex-direction: row;
+        height: inherit;
+        justify-content: space-around;
+      }
+      .recommendation-widget--extra-small .recommendation-widget__star {
+        width: 0.5rem;
+        height: 0.5rem;
+      }
+      @media (min-width: 768px) and (max-width: 991px) {
+        .recommendation-widget {
+          width: 8rem;
+          height: 11.4375rem;
+          top: calc(50% - 11.4375rem / 2 + 7.1875rem);
+          border-top-width: 0.1875rem;
+          border-left-width: 0.1875rem;
+          border-bottom-width: 0.1875rem;
+        }
+        .recommendation-widget.recommendation-widget--align-left {
+          border-left-width: inherit;
+          border-right-width: 0.1875rem;
+        }
+        .recommendation-widget--show {
+          display: inherit;
+        }
+        .recommendation-widget__seal {
+          width: 6.3rem;
+          margin-top: 0.25rem;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .recommendation-widget.recommendation-widget--align-left
+          .recommendation-widget__seal {
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .recommendation-widget__stars {
+          padding-left: 0.25rem;
+          padding-right: 0.25rem;
+        }
+        .recommendation-widget__star {
+          width: 1.1875rem;
+          height: 1.1875rem;
+        }
+        .recommendation-widget__appraisal {
+          font-size: 0.8125rem;
+          line-height: 1.1;
+          margin-top: 0.3125rem;
+        }
+        .recommendation-widget__ratings {
+          font-size: 0.625rem;
+        }
+        hr.recommendation-widget__divider--bottom {
+          margin-left: 0.1875rem;
+          margin-right: 0.1875rem;
+          margin-top: 0.3125rem;
+          margin-bottom: 0.125rem;
+        }
+        .recommendation-widget-- small {
+          width: 2.8125rem;
+          height: 10rem;
+          text-align: center;
+        }
+        .recommendation-widget--small
+          .recommendation-widget__seal-without-label {
+          margin-top: 0.25rem;
+          width: 2rem;
+          height: 2rem;
+          display: inherit;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .recommendation-widget--small hr.recommendation-widget__divider {
+          margin-left: 0.1875rem;
+          margin-right: 0.1875rem;
+          margin-top: 0.325rem;
+          margin-bottom: 0.125rem;
+        }
+        .recommendation-widget--small .recommendation-widget__stars {
+          height: 6.375rem;
+        }
+        .recommendation-widget--small .recommendation-widget__star {
+          width: 1rem;
+          height: 1rem;
+        }
+        .recommendation-widget--small .recommendation-widget__appraisal {
+          opacity: 0;
+        }
+        .recommendation-widget--small .recommendation-widget__ratings {
+          opacity: 0;
+        }
+        .recommendation-widget--small .recommendation-widget__divider--bottom {
+          opacity: 0;
+        }
+        .recommendation-widget--extra-small {
+          height: 2.875rem;
+        }
+        .recommendation-widget.recommendation-widget--extra-small {
+          height: 10.75rem;
+        }
+        .recommendation-widget--extra-small .recommendation-widget__stars {
+          flex-direction: row;
+          height: inherit;
+          justify-content: space-around;
+        }
+        .recommendation-widget--extra-small .recommendation-widget__star {
+          width: 0.5rem;
+          height: 0.5rem;
+        }
+        .recommendation-widget.recommendation-widget--extra-small
+          .recommendation-widget__star {
+          width: 1.1875rem;
+          height: 1.1875rem;
+        }
+        .recommendation-widget.recommendation-widget--extra-small
+          .recommendation-widget__stars {
+          height: 7.4rem;
+        }
+      }
+      @media (min-width: 992px) and (max-width: 1199px) {
+        .recommendation-widget {
+          width: 9rem;
+          height: 13.375rem;
+          top: calc(50% - 13.375rem / 2 + 11.125rem);
+          border-top-width: 0.25rem;
+          border-left-width: 0.25rem;
+          border-bottom-width: 0.25rem;
+        }
+        .recommendation-widget.recommendation-widget--align-left {
+          border-left-width: inherit;
+          border-right-width: 0.25rem;
+        }
+        .recommendation-widget--show {
+          display: inherit;
+        }
+        .recommendation-widget__seal {
+          width: 7.0625rem;
+          margin-top: 0.25rem;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .recommendation-widget.recommendation-widget--align-left
+          .recommendation-widget__seal {
+          margin-right: auto;
+          margin-left: auto;
+        }
+        .recommendation-widget__stars {
+          padding-left: 0.25rem;
+          padding-right: 0.25rem;
+        }
+
+        .recommendation-widget__star {
+          width: 1.375rem;
+          height: 1.375rem;
+        }
+        .recommendation-widget__appraisal {
+          font-size: 0.9375rem;
+          line-height: 1.1;
+          margin-top: 0.375rem;
+        }
+        .recommendation-widget__ratings {
+          font-size: 0.75rem;
+        }
+        hr.recommendation-widget__divider {
+          margin-left: 0.1875rem;
+          margin-right: 0.1875rem;
+          margin-top: 0.3125rem;
+          margin-bottom: 0.325rem;
+        }
+        .recommendation-widget-- small {
+          width: 3.3125rem;
+          height: 11.6875rem;
+          text-align: center;
+        }
+        .recommendation-widget--small
+          .recommendation-widget__seal-without-label {
+          margin-top: 0.25rem;
+          width: 2.5rem;
+          height: 2.5rem;
+          display: inherit;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .recommendation-widget--small hr.recommendation-widget__divider {
+          margin-left: 0.1875rem;
+          margin-right: 0.1875rem;
+          margin-top: 0.325rem;
+          margin-bottom: 0.0625rem;
+        }
+        .recommendation-widget--small .recommendation-widget__stars {
+          height: 7.4845rem;
+        }
+        .recommendation-widget--small .recommendation-widget__appraisal {
+          opacity: 0;
+        }
+        .recommendation-widget--small .recommendation-widget__ratings {
+          opacity: 0;
+        }
+        .recommendation-widget--small .recommendation-widget__divider--bottom {
+          opacity: 0;
+        }
+        .recommendation-widget--extra-small {
+          height: 12.875rem;
+        }
+        .recommendation-widget--extra-small .recommendation-widget__stars {
+          flex-direction: row;
+          height: 9rem;
+          justify-content: space-around;
+        }
+        .recommendation-widget--extra-small .recommendation-widget__star {
+          width: 1.375rem;
+          height: 1.375rem;
+        }
+      }
+      @media (min-width: 1200px) {
+        .recommendation-widget {
+          width: 9rem;
+          height: 14.125rem;
+          top: calc(50% - 14.125rem / 2 + 14.125rem);
+          border-top-width: 0.25rem;
+          border-left-width: 0.25rem;
+          border-bottom-width: 0.25rem;
+        }
+        .recommendation-widget.recommendation-widget--align-left {
+          border-left-width: inherit;
+          border-right-width: 0.25rem;
+        }
+        .recommendation-widget--show {
+          display: inherit;
+        }
+        .recommendation-widget__seal {
+          width: 7.125rem;
+          margin-top: 0.25rem;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .recommendation-widget.recommendation-widget--align-left
+          .recommendation-widget__seal {
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .recommendation-widget__stars {
+          padding-left: 0.25rem;
+          padding-right: 0.25rem;
+        }
+        .recommendation-widget__star {
+          width: 1.375rem;
+          height: 1.375rem;
+        }
+        .recommendation-widget__appraisal {
+          font-size: 0.9375rem;
+          line-height: 1.1;
+          margin-top: 0.375rem;
+        }
+        .recommendation-widget__ratings {
+          font-size: 0.75rem;
+        }
+        hr.recommendation-widget__divider {
+          margin: 0.325rem 0.1875rem;
+        }
+        .recommendation- widget--small {
+          width: 3.3125rem;
+          height: 11.6875rem;
+          text-align: center;
+        }
+        .recommendation-widget--
+          small
+          .recommendation-widget__seal-without-label {
+          margin-top: 0.3125rem;
+          width: 2.5rem;
+          height: 2.5rem;
+          display: inherit;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .recommendation-widget--small .recommendation-widget__stars {
+          height: 7.4845rem;
+        }
+        .recommendation-widget--small .recommendation-widget__appraisal {
+          opacity: 0;
+        }
+        .recommendation-widget--small .recommendation-widget__ratings {
+          opacity: 0;
+        }
+        .recommendation-widget--small .recommendation-widget__divider--bottom {
+          opacity: 0;
+        }
+        .recommendation-widget--extra-small {
+          height: 13.2rem;
+        }
+        .recommendation-widget-- extra-small .recommendation-widget__stars {
+          flex-direction: row;
+          height: 9rem;
+          justify-content: space-around;
+        }
+        .recommendation-widget--extra-small .recommendation-widget__star {
+          width: 1.375rem;
+          height: 1.375rem;
+        }
+      }
+    </style>
+    <script>
+      let recommendationWidget;
+      const setRecommendationWidgetToScrolledState = () => {
+          recommendationWidget &&
+            recommendationWidget.classList.add(
+              'recommendation-widget--scrolled',
+              'recommendation-widget--small',
+              'recommendation-widget--extra-small'
+            );
+        },
+        handleScrollAndResize = (e) => {
+          setRecommendationWidgetToScrolledState();
+        },
+        animateRecommendationWidget = (e) => {
+          e.classList.add('animating'),
+            e.classList.remove(
+              'recommendation-widget--small',
+              'recommendation-widget--extra-small'
+            ),
+            e.addEventListener(
+              'transitionend',
+              () => {
+                e.classList.remove('animating');
+              },
+              { once: !0 }
+            );
+        },
+        toggleAnimateRecommendationWidget = (e) => {
+          e.classList.add('animating'),
+            e.classList.toggle('recommendation-widget--small'),
+            e.classList.toggle('recommendation-widget--extra-small'),
+            e.addEventListener(
+              'transitionend',
+              () => {
+                e.classList.remove('animating');
+              },
+              { once: !0 }
+            );
+        },
+        handleOnClick = (e) => {
+          if (
+            recommendationWidget &&
+            !recommendationWidget.classList.contains('animating') &&
+            recommendationWidget.classList.contains(
+              'recommendation-widget--small'
+            )
+          )
+            return;
+          animateRecommendationWidget(recommendationWidget), !1;
+        },
+        handleMouseEnter = () => {
+          recommendationWidget &&
+            !recommendationWidget.classList.contains('animating') &&
+            recommendationWidget.classList.contains(
+              'recommendation-widget--scrolled'
+            ) &&
+            toggleAnimateRecommendationWidget(recommendationWidget);
+        },
+        handleMouseLeave = () => {
+          recommendationWidget &&
+            !recommendationWidget.classList.contains('animating') &&
+            recommendationWidget.classList.contains(
+              'recommendation-widget--scrolled'
+            ) &&
+            toggleAnimateRecommendationWidget(recommendationWidget),
+            recommendationWidget.classList.add('recommendation-widget--show');
+        };
+      'undefined' != typeof window &&
+        (window.addEventListener('scroll', handleScrollAndResize, { once: !0 }),
+        window.addEventListener('resize', handleScrollAndResize, { once: !0 }),
+        window.addEventListener('DOMContentLoaded', (e) => {
+          (recommendationWidget = document.querySelector(
+            '.recommendation-widget'
+          )),
+            fetch(
+              'https://webservice.firmenabc.at/WebServices.Reviews/reviewSummary/7331335?format=json'
+            )
+              .then((e) => e.json())
+              .then((e) => {
+                console.log(e);
+                let n = 'Sehr Gut';
+                void 0 !== e.AverageRating &&
+                  void 0 !== e.CountOfRatings &&
+                  e.AverageRating >= 4 &&
+                  e.CountOfRatings >= 3 &&
+                  ((recommendationWidget.querySelector(
+                    '.recommendation-widget__ratings'
+                  ).innerHTML = e.CountOfRatings + 'Bewertungen'),
+                  4 == Math.round(e.AverageRating) || (n = 'Ausgezeichnet'),
+                  (recommendationWidget.querySelector(
+                    '.recommendation-widget__appraisal'
+                  ).innerHTML = n));
+              }),
+            recommendationWidget.classList.add('recommendation-widget--show'),
+            recommendationWidget.addEventListener('click', handleOnClick),
+            recommendationWidget.addEventListener(
+              'mouseenter',
+              handleMouseEnter
+            ),
+            recommendationWidget.addEventListener(
+              'mouseleave',
+              handleMouseLeave
+            );
+        })),
+        window.setTimeout(function () {
+          recommendationWidget &&
+            !recommendationWidget.classList.contains(
+              'recommendation-widget--scrolled'
+            ) &&
+            setRecommendationWidgetToScrolledState();
+        }, 1e4);
+    </script>
+  </head>
+  <body>
+    <svg class="inline-" svgs>
+      <symbol id="seal-without-label" viewBox="0 0 38.8 38.6">
+        <linearGradient
+          gradientUnits="userSpaceOnUse"
+          id="SVGID_1_"
+          x1="13.656"
+          x2="33.09"
+          y1="24.739"
+          y2="5.306"
+        >
+          <stop offset="0" stop-color="#e8c46c" />
+          <stop offset=".364" stop-color="#b78b2f" />
+          <stop offset=".565" stop- color="#dcc278" />
+          <stop offset=".717" stop-color="#f5e6a8" />
+          <stop offset=".792" stop-color="#fff4bb" />
+          <stop offset=".849" stop-color="#fef2b8" />
+          <stop offset=".893" stop-color="#fbecae" />
+          <stop offset=".932" stop-color="#f7e29e" />
+          <stop offset=".968" stop-color="#f0d487" />
+          <stop offset="1" stop-color="#e8c46c" />
+        </linearGradient>
+        <linearGradient
+          gradientUnits="userSpaceOnUse"
+          id="SVGID_2_"
+          x1="8.632"
+          x2="38.101"
+          y1="19.025"
+          y2="19.025"
+        >
+          <stop offset="0" stop-color="#e8c46c" />
+          <stop offset=".221" stop- color="#fff9d7" />
+          <stop offset=".225" stop-color="#fffad9" />
+          <stop offset=".422" stop-color="#ccac61" />
+          <stop offset=".512" stop-color="#b78b2f" />
+          <stop offset=".627" stop-color="#dcc278" />
+          <stop offset=".714" stop-color="#f5e6a8" />
+          <stop offset=".757" stop-color="#fff4bb" />
+          <stop offset=".768" stop-color="#fef1b6" />
+          <stop offset=".87" stop-color="#f2d98e" />
+          <stop offset=".951" stop-color="#ebca75" />
+          <stop offset="1" stop-color="#e8c46c" />
+        </linearGradient>
+        <path
+          d="M19.8 29.6c-.7 0-1.5-.3-2.1-.8l-8.1-8c-1.2-1.1-1.2-30-4.1 1.1-1.1 3-1.2 4.2 0l6 6L33 9.3c1.1-1.1 3-1.1 4.2 0 1.1 1.1 1.1 3 0 4.1L21.9 28.7c-.6.6-1.3.9-2.1.9z"
+          fill="url(#SVGID_1_)"
+          stroke="url(#SVGID_2_)"
+          stroke-miterlimit="10"
+          stroke-width=".25"
+        />
+        <linearGradient
+          gradientUnits="userSpaceOnUse"
+          id="SVGID_3_"
+          x1="19.408"
+          x2="19.408"
+          y1="38.468"
+          y2=".125"
+        >
+          <stop offset="0" stop-color="#e8c46c" />
+          <stop offset=".334" stop-color="#b78b2f" />
+          <stop offset=".482" stop-color="#dcc278" />
+          <stop offset=".593" stop-color="#f5e6a8" />
+          <stop offset=".648" stop- color="#fff4bb" />
+          <stop offset=".664" stop-color="#fef1b6" />
+          <stop offset=".812" stop-color="#f2d98e" />
+          <stop offset=".929" stop-color="#ebca75" />
+          <stop offset="1" stop-color="#e8c46c" />
+        </linearGradient>
+        <linearGradient
+          gradientUnits="userSpaceOnUse"
+          id="SVGID_4_"
+          x1="0"
+          x2="38.816"
+          y1="19.297"
+          y2="19.297"
+        >
+          <stop offset="0" stop-color="#e8c46c" />
+          <stop offset=".221" stop-color="#fff9d7" />
+          <stop offset=".225" stop-color="#fffad9" />
+          <stop offset=".422" stop-color="#ccac61" />
+          <stop offset=".512" stop-color="#b78b2f" />
+          <stop offset=".627" stop-color="#dcc278" />
+          <stop offset=".714" stop-color="#f5e6a8" />
+          <stop offset=".757" stop-color="#fff4bb" />
+          <stop offset=".768" stop-color="#fef1b6" />
+          <stop offset=".87" stop-color="#f2d98e" />
+          <stop offset=".951" stop-color="#ebca75" />
+          <stop offset="1" stop-color="#e8c46c" />
+        </linearGradient>
+        <path
+          d="M38.1 14.6l-5.3 5.3c-.3 7.1-6.2 12.7-13.4 12.7C12 32.6 6 26.6 6 19.3 612 12 6 19.4 6c3.9 0 7.6 1.7 10.2 4.6l4.2-4.1C30.1 2.5 25 .2 19.5.2 8.8.1.1 8.7.1 19.3c0 10.6 8.7 19.219.3 19.2 10.6 0 19.3-8.6 19.3-19.2 0-1.1-.1-2.2-.3-3.3-.1-.4-.2-.9-.3-1.4z"
+          fill="url(#SVGID_3_)"
+          stroke="url(#SVGID_4_)"
+          stroke-miterlimit="10"
+          stroke-width=".25"
+        />
+      </symbol>
+      <symbol id="shopping-cart" viewBox="0 0 510 510">
+        <path
+          d="M153,408c-28.05,0-51,22.95-51,51s22.95,51,51,51s51-22.95,51-51S181.05,408,153,408z M0,0v51h51l91.8,193.8L107.1,306c-2.55,7.65-5.1,17.85-5.1,25.5c0,28.05,22.95,51,51,51h306v-51H163.2c-2.55,0-5.1-2.55-5.1-5.1v-2.551l22.95-43.35h188.7c20.4,0,35.7-10.2,43.35-25.5L504.9,89.25c5.1-5.1,5.1-7.65,5.1-12.75c0-15.3-10.2-25.5-25.5-25.5H107.1L84.15,0H0z M408,408c-28.05,0-51,22.95-51,51s22.95,51,51,51s51-22.95,51-51S436.05,408,408,408z"
+        />
+      </symbol>
+      <symbol id="shopping-cart-parts" viewBox="0 0 510 510">
+        <path
+          d="M153,408c-28.05,0-51,22.95-51,51c0,28.051,22.95,51,51,51s51-22.949,51-51C204,430.95,181.05,408,153,408z"
+          fill="currentColor"
+        />
+        <path
+          d="M0,0v51h51l91.8,193.8L107.1,306c-2.55,7.65-5.1,17.851-5.1,25.5c0,28.05,22.95,51,51,51h306v-51H163.2c-2.551,0-5.101-2.55-5.101-5.1v-2.551l22.95-43.351h188.7c20.399,0,35.699-10.2,43.35-25.5L504.9,89.25C510,84.15,510,81.6,510,76.5c0-15.3-10.2-25.5-25.5-25.5H107.1L84.15,0H0z"
+        />
+        <path
+          d="M408,408c-28.051,0-51,22.95-51,51c0,28.051,22.949,51,51,51c28.05,0,51-22.949,51-51C459,430.95,436.05,408,408,408z"
+          fill="currentColor"
+        />
+      </symbol>
+      <symbol
+        id="firmenabc-at-"
+        seal
+        viewBox="0 0 130.4 129.7"
+        xml:space="preserve"
+      >
+        <linearGradient
+          gradientUnits="userSpaceOnUse"
+          id="SVGID_1_"
+          x1="0"
+          x2="130.42"
+          y1="68.14"
+          y2="68.14"
+          gradientTransform="matrix(1 0 0 -1 0
+        132.98)"
+        >
+          <stop offset="0" stop-color="#e8c46c" />
+          <stop offset=".33" stop-color="#b78b2f" />
+          <stop offset=".48" stop-color="#dcc278" />
+          <stop offset=".59" stop-color="#f5e6a8" />
+          <stop offset=".65" stop- color="#fff4bb" />
+          <stop offset=".66" stop-color="#fef1b6" />
+          <stop offset=".81" stop-color="#f2d98e" />
+          <stop offset=".93" stop-color="#ebca75" />
+          <stop offset="1" stop-color="#e8c46c" />
+        </linearGradient>
+        <ellipse
+          cx="65.2"
+          cy="64.8"
+          fill="#fff"
+          rx="64.2"
+          ry="63.8"
+          stroke="url(#SVGID_1_)"
+          stroke-miterlimit="10"
+          stroke-width="2"
+        />
+        <path
+          d="M18.8 30.4l4.8-5.5 1.2 1-3.6 4.1 2.1 1.8 3.1-3.6 1.1 1-3.1 3.6 3.5 3-1.2 1.4-7.9-6.8zm7.7-8.2l1.4-1.2 6.8 8-1.4 1.2-6.8-8zm5.3-4.3l4.3-2.6c2-1.2 3.5-.9 4.5.6.7 1 .6 2.3-.2 3.2.6-.3 1.6-.3 2.51.1.4.9 1.1 1.6 1.9 2.1l-1.7 1c-.4-.3-.8-.7-1-1.2-1-1.7-1.8-2.2-3.2-1.3l-2.4 1.4 2.2 3.7-1.6 1-5.3-9zm43.1l2.6-1.5c.8-.3 1.2-1.2.9-2 0-.1-.1-.2-.2-.3-.7-1.1-1.6-.9-2.4-.4l-2.6 1.5 1.7 2.7zm8.1-9.7l2.5-.757.1.5-8.7 2.5-.7 2.9 10.1-1.7.5-2.2-7.8-.6 8.6-1.5.4-5-7 2.2 7.8-1.7.5-2.9-10.1zM60 7.7l7.6-.2v1.6l-5.8.2.1 2.8 5.3-.1v1.5H62l.1 3.1 5.8-.2V18l-7.7.2L60 7.7zm12.3.1l1.9.4 3.3 8.5L79 9.1l1.7.3-2 10.3-1.9-.4-3.3-8.5-1.5 7.7-1.7-.3 2-10.4zm16.1 4.5l1.8.8-.6 11.2-1.8-.8.2-2.9-3.8-1.7-2 2.1-1.7-.8 7.9-7.9zm-3.25.5l2.9 1.3.4-4.8-3.3 3.5zm12.2-.7l4.1 3.1c1.5 1.1 2 2.6.9 4-.6.8-1.6 1.2-2.6.9.8 1 .8 2.4-.1 3.3-1 1.3-2.71.6-4.9 0l-3.9-3 6.5-8.3zm-4 8.2l2.6 2c.6.6 1.6.6 2.2 0 .1-.1.1-.2.2-.2.6-.7.5-1.6-.2-2.2-.1-.1-.2-.1-.3-.2l-2.6-2-1.9 2.6zm2.8-3.6l2.4 1.8c.6.5 1.5.5 2-.1 0 0 .1-.1.1-.2.6-.8.4-1.5-.4-2.1L98 19.4l-1.8 2.3zm13.611.7c.9-1 .9-2.4 0-3.4-1.4-1.8-3.6-1.2-5.1 0s-2.5 3.3-1.1 5c1 1.2 2.7 1.3 3.8.4l1.1 1.4c-1.9 1.5-4.6 1.2-6.1-.7l-.1-.1c-2-2.5-1.3-5.5 1.1-7.4s5.5-2 7.5.4c1.5 1.8 1.7 4.1 0 5.7l-1.1-1.3zM23.5 87.6l4.1 6.4-1.3.8-3.2-4.8-2.3 1.5 2.9 4.5-1.3.8-2.9-4.5-2.6 1.7 3.1 4.9-1.3.9-4.1-6.5 8.9-5.7zm5.4 8.4l1.9 1.8-3.5 8 7.7-4.1 1.9 1.8-7.2 7.7-1.3-1.2 5.6-6-7.7 3.9-1.1-1 3.4-7.9-5.5 5.9-1.3-1.2 7.1-7.7zm10.6 9.1l4.1 2.2c2.7 1.42.3 3.4 1.6 4.6s-2 2.6-4.7 1.1l-2.5-1.3-1.9 3.6-1.7-.9 5.1-9.3zm-.7 5.2l2.4 1.3c.8.5 1.8.3 2.3-.4 0-.1.1-.1.1-.2.5-.7.3-1.7-.4-2.2-.1-.1-.3-.2-.4-.2l-2.4-1.3-1.6 3zm10-.7l7 2-.5 1.5-5.2-1.5-.8 2.6 4.6 1.3-.4 1.5-4.6-1.3-1.3 4.5-1.8-.5 3-10.1zm8.8 2.4l7.6.6-.1 1.6-5.7-.5-.3 2.8 5.3.4-.1 1.5-5.3-.4-.3 3.1 5.8.4-.1 1.6-7.7-.6.9-10.5zm9.8.6l1.8-.3.6 4.1 4.8-.6-.6-4.1 1.8-.3 1.4 10.4-1.8.3-.6-4.7-4.8.6.6 4.7-1.8.3-1.4-10.4zm11-1.9l1.7-.6 3 8.4 5-1.8.5 1.5-6.8 2.5-3.4-10zm8.3-3.2l1.6-1 3.3 5.2c.8 1.2 1.7 2.5 3.7 1.3s1.2-2.7.5-3.9l-3.3-5.2 1.6-1 3.6 5.7c1.4 2.3.7 4.3-1.5 5.7s-4.4 1.2-5.8-1.1l-3.7-5.7zm9.4-6.3l1.4-1.4 8.9 1.9-5.6-5.4L102 95l7.5 7.3-1.4 1.4-8.9-1.9 5.5 5.4-1.2 1.2-7.4-7.2zm21.4-11.1l-.6 1-1.2-.4c.5 1.1.4 2.5-.33.5-1.6 2.7-4.7 3.1-7.3 1.6s-3.8-4.4-2.2-7.1c1.2-2 3.2-3.1 5.4-2.1l-.9 1.6c-1.2-.4-2.6.1-3.2 1.4-1.1 2 .13.8 1.9 4.8 1.8 1 3.9 1.2 5.1-.8.9-1.2.6-2.9-.6-3.7-.1-.1-.3-.2-.4-.3l-1.4 2.4-1.2-.7 2.3-3.9 4.62.7z"
+          fill="#bd9e56"
+        />
+        <linearGradient
+          gradientUnits="userSpaceOnUse"
+          id="SVGID_2_"
+          x1="53.526"
+          x2="94.605"
+          y1="56.175"
+          y2="97.263"
+          gradientTransform="matrix(1 0 0 -1 0 132.98)"
+        >
+          <stop offset="0" stop- color="#e8c46c" />
+          <stop offset=".36" stop-color="#b78b2f" />
+          <stop offset=".56" stop-color="#dcc278" />
+          <stop offset=".72" stop-color="#f5e6a8" />
+          <stop offset=".79" stop-color="#fff4bb" />
+          <stop offset=".85" stop-color="#fef2b8" />
+          <stop offset=".89" stop-color="#fbecae" />
+          <stop offset=".93" stop-color="#f7e29e" />
+          <stop offset=".97" stop-color="#f0d487" />
+          <stop offset="1" stop-color="#e8c46c" />
+        </linearGradient>
+        <linearGradient
+          gradientUnits="userSpaceOnUse"
+          id="SVGID_3_"
+          x1="42.657"
+          x2="105.463"
+          y1="68.231"
+          y2="68.231"
+          gradientTransform="matrix(1 0 0 -1 0 132.98)"
+        >
+          <stop offset="0" stop-color="#e8c46c" />
+          <stop offset=".22" stop-color="#fff9d7" />
+          <stop offset=".23" stop-color="#fffad9" />
+          <stop offset=".42" stop-color="#ccac61" />
+          <stop offset=".51" stop-color="#b78b2f" />
+          <stop offset=".63" stop-color="#dcc278" />
+          <stop offset=".71" stop-color="#f5e6a8" />
+          <stop offset=".76" stop-color="#fff4bb" />
+          <stop offset=".77" stop-color="#fef1b6" />
+          <stop offset=".87" stop-color="#f2d98e" />
+          <stop offset=".95" stop-color="#ebca75" />
+          <stop offset="1" stop-color="#e8c46c" />
+        </linearGradient>
+        <path
+          d="M66.5 87.1c-1.6 0-3.2-.6-4.4-1.8L45 68.3c-2.4-2.4-2.4-6.3 0-8.7 0 0 0 0 0 0 2.4-2.4 6.4-2.4 8.8 0l12.7 12.6 27.8-27.9c2.4-2.4 6.4-2.4 8.8 0 2.4 2.4 2.4 6.3 0 8.7 0 0 0 0 0 0L70.9 85.2c-1.1 1.2-2.7 1.9-4.41.9z"
+          fill="url(#SVGID_2_)"
+          stroke="url(#SVGID_3_)"
+          stroke-miterlimit="10"
+        />
+        <linearGradient
+          gradientUnits="userSpaceOnUse"
+          id="SVGID_4_"
+          x1="66.246"
+          x2="66.246"
+          y1="27.12"
+          y2="108.21"
+          gradientTransform="matrix(1 0 0 -1 0 132.98)"
+        >
+          <stop offset="0" stop-color="#e8c46c" />
+          <stop offset=".33" stop-color="#b78b2f" />
+          <stop offset=".48" stop-color="#dcc278" />
+          <stop offset=".59" stop- color="#f5e6a8" />
+          <stop offset=".65" stop-color="#fff4bb" />
+          <stop offset=".66" stop-color="#fef1b6" />
+          <stop offset=".81" stop-color="#f2d98e" />
+          <stop offset=".93" stop-color="#ebca75" />
+          <stop offset="1" stop-color="#e8c46c" />
+        </linearGradient>
+        <linearGradient
+          gradientUnits="userSpaceOnUse"
+          id="SVGID_5_"
+          x1="24.41"
+          x2="106.97"
+          y1="67.655"
+          y2="67.655"
+          gradientTransform="matrix(1 0 0 -1 0 132.98)"
+        >
+          <stop offset="0" stop-color="#e8c46c" />
+          <stop offset=".22" stop-color="#fff9d7" />
+          <stop offset=".23" stop-color="#fffad9" />
+          <stop offset=".42" stop-color="#ccac61" />
+          <stop offset=".51" stop-color="#b78b2f" />
+          <stop offset=".63" stop-color="#dcc278" />
+          <stop offset=".71" stop-color="#f5e6a8" />
+          <stop offset=".76" stop-color="#fff4bb" />
+          <stop offset=".77" stop-color="#fef1b6" />
+          <stop offset=".87" stop-color="#f2d98e" />
+          <stop offset=".95" stop-color="#ebca75" />
+          <stop offset="1" stop-color="#e8c46c" />
+        </linearGradient>
+        <path
+          d="M105.2 55.5L94 66.7c-.7 15.6-13.9 27.7-29.5 27s-27.7-13.9-27-29.5c.7-15.6 13.9-27.7 29.5-277.8.3 15.1 3.9 20.1 9.8l8.8-8.8c-15-16.4-40.4-17.6-56.8-2.6S21.6 76 36.5 92.4 76.9 110 93.4 95c10.2-9.3 14.9-23.1 12.5-36.6-.2-1-.4-2-.7-2.9z"
+          fill="url(#SVGID_4_)"
+          stroke="url(#SVGID_5_)"
+          stroke-miterlimit="10"
+        />
+      </symbol>
+      <symbol id="star-full" viewBox="0 0 29.928.6" xml:space="preserve">
+        <linearGradient
+          gradientUnits="userSpaceOnUse"
+          id="SVGID_1_"
+          x1=".778"
+          x2="29.559"
+          y1="14.088"
+          y2="14.088"
+        >
+          <stop offset="0" stop-color="#e8c46c" />
+          <stop offset=".221" stop- color="#fff9d7" />
+          <stop offset=".225" stop-color="#fffad9" />
+          <stop offset=".422" stop-color="#ccac61" />
+          <stop offset=".512" stop-color="#b78b2f" />
+          <stop offset=".627" stop-color="#dcc278" />
+          <stop offset=".714" stop-color="#f5e6a8" />
+          <stop offset=".757" stop-color="#fff4bb" />
+          <stop offset=".768" stop-color="#fef1b6" />
+          <stop offset=".87" stop-color="#f2d98e" />
+          <stop offset=".951" stop-color="#ebca75" />
+          <stop offset="1" stop-color="#e8c46c" />
+        </linearGradient>
+        <path
+          d="M1.8 10.9l8.8-1.6 4.5-8 4.4 8 9.2 1.8-6.1 6.5s1.39.6 1.1 9.5c-.3-.1-8.5-3.8-8.5-3.8L6.4 27l1.7-9.3-6.3-6.8z"
+          fill="#eacd76"
+          stroke="url(#SVGID_1_)"
+          stroke-miterlimit="10"
+        />
+        <path
+          d="M29.6 10.8c-.1-.3-.3-.5-.6-.5l-9.1-1.5-4.2-8c-.1-.3-.4-.4-.7-.4h-.2c-.3 0-.5.2-.7.4l-4.2 8-9.1 1.5c-.3 0-.5.3-.6.5-.1.3 0 .6.2.8l6.3 6.3-1.4 9.5c0 .3.1.6.3.8.1.1.3.2.5.2.1 0 .2 0 .4-.1l8.4-4.1 8.4 4.1c.1.1.2.1.4.1s.3-.1.5-.2c.2-.2.4-.5.3-.8l-1.4-9.5 6.3-6.3c.2-.2.3-.5.2-.8zm-7.9 6.3c-.2.2-.3.4-.2.7l1.2 8.4-7.4-3.6c-.1-.1-.3-.1-.4-.1-.1 0-.3 0-.4.1l-7.4 3.6 1.2-8.4c0-.3 0-.5-.2-.7l-5.5-5.5 7.9-1.4c.2 0.5-.2.6-.4l3.7-7 3.7 7c.1.2.3.4.6.4l7.9 1.4-5.3 5.5z"
+          fill="#eacd76"
+          stroke="#cea642"
+          stroke-miterlimit="10"
+          stroke-width=".5"
+        />
+      </symbol>
+      <symbol id="star-empty" viewBox="0 0 29.9 28.6" xml:space="preserve">
+        <g fill="#fff" stroke="#cea642" stroke-miterlimit="10">
+          <path
+            d="M1.8 10.9l8.8-1.6 4.5-8 4.4 8 9.2 1.8-6.16.5s1.3 9.6 1.1 9.5c-.3-.1-8.5-3.8-8.5-3.8L6.4 27l1.7-9.3-6.3-6.8z"
+          />
+          <path
+            d="M29.6 10.8c-.1-.3-.3-.5-.6-.5l-9.1-1.5-4.2-8c-.1-.3-.4-.4-.7-.4h-.2c-.3 0-.5.2-.7.4l-4.2 8-9.1 1.5c-.3 0-.5.3-.6.5-.1.3 0 .6.2.8l6.36.3-1.4 9.5c0 .3.1.6.3.8.1.1.3.2.5.2.1 0 .2 0 .4-.1l8.4-4.1 8.4 4.1c.1.1.2.1.4.1s.3-.1.5-.2c.2-.2.4-.5.3-.8l-1.4-9.5 6.3-6.3c.2-.2.3-.5.2-.8zm-7.9 6.3c-.2.2-.3.4-.2.7l1.2 8.4-7.4-3.6c-.1-.1-.3-.1-.4-.1-.1 0-.3 0-.4.1l-7.4 3.6 1.2-8.4c0-.3 0-.5-.2-.7l-5.5-5.5 7.9-1.4c.2 0 .5-.2.6-.4l3.7-7 3.7 7c.1.2.3.4.6.4l7.9 1.4-5.35.5z"
+            stroke-width=".5"
+          />
+        </g>
+      </symbol>
+    </svg>
+    <a href="https://www.garten-erdarbeiten-brunner.at/" target="_blank"
+      ><div
+        class="recommendation-widget recommendation-widget--align-left recommendation-widget--fabc recommendation-widget--firmenabc_at recommendation-widget-123123"
+      >
+        <svg class="recommendation-widget__seal" alt="Empfehlungswidget Siegel">
+          <use xlink:href="#firmenabc-at-seal" />
+        </svg>
+        <svg
+          class="recommendation-widget__seal-without-label"
+          alt="Empfehlungswidget Siegel ohne Beschriftung"
+        >
+          <use xlink:href="#seal-without-label" />
+        </svg>
+        <hr
+          class="recommendation-widget__divider recommendation-widget__divider--top"
+        />
+        <div class="recommendation-widget__stars">
+          <svg
+            class="recommendation-widget__star"
+            alt="Empfehlungswidget Stern"
+          >
+            <use xlink:href="#star-full" />
+          </svg>
+          <svg
+            class="recommendation- widget__star"
+            alt="Empfehlungswidget Stern"
+          >
+            <use xlink:href="#star-full" />
+          </svg>
+          <svg
+            class="recommendation-widget__star"
+            alt="Empfehlungswidget Stern"
+          >
+            <use xlink:href="#star-full" />
+          </svg>
+          <svg
+            class="recommendation-widget__star"
+            alt="Empfehlungswidget Stern"
+          >
+            <use xlink:href="#star-full" />
+          </svg>
+          <svg
+            class="recommendation-widget__star"
+            alt="Empfehlungswidget
+
+        Stern"
+          >
+            <use xlink:href="#star-empty" />
+          </svg>
+        </div>
+
+        <div class="recommendation-widget__appraisal">Sehr gut</div>
+        <hr
+          class="recommendation-widget__divider recommendation-widget__divider--bottom recommendation-widget__divider--hide"
+        />
+        <div class="recommendation-widget__ratings"></div></div
+    ></a>
+  </body>
+</html>
